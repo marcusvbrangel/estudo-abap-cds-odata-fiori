@@ -1,0 +1,53 @@
+@AbapCatalog.sqlViewName: 'ZACAD07CDS02'
+@AbapCatalog.compiler.compareFilter: true
+@AbapCatalog.preserveKey: true
+@AccessControl.authorizationCheck: #NOT_REQUIRED
+@EndUserText.label: 'Segunda CDS View'
+define view ZACAD_07_CDS_02
+  as select from    snwd_so          as so
+
+    left outer join snwd_bpa         as bpa       on bpa.node_key = so.buyer_guid
+    left outer join snwd_so_inv_head as cabecalho on cabecalho.so_guid = so.node_key
+
+{
+  key so.so_id                 as id,
+      //so.gross_amount as vendaValorBruto,
+      //so.net_amount as vendaValorLiquido,
+
+      bpa.company_name         as parceiroNome,
+      bpa.currency_code        as parceiroMoeda,
+      bpa.email_address        as parceiroEmail,
+
+      //cabecalho.gross_amount as cabecalhoValorBruto,
+      cabecalho.payment_status as cabecalhoStatusPagamento,
+
+      case cabecalho.payment_status
+        when 'P' then 'Pago'
+        else 'Em Aberto'
+      end                      as cabecalhoDescStatusPagamento,
+
+      sum(so.gross_amount)     as vendaValorTotal
+
+}
+
+group by
+  so.so_id,
+  bpa.company_name,
+  bpa.currency_code,
+  bpa.email_address,
+  cabecalho.so_guid,
+  cabecalho.payment_status
+
+//---------------------------------------------------------------------------------------
+//------- fontes de dados do dominio da especificacao -----------------------------------
+
+// snwd_so           -> EPM: Sales Order Header Table -> ordem de venda
+
+// snwd_so_inv_head  -> EPM: Sales Order Invoice Header Table -> cabecalho da ordem de venda
+
+// snwd_so_inv_item  -> EPM: Sales Order Invoice Items Table -> itens da ordem de venda
+
+// snwd_bpa          -> EPM: Business Partners -> parceiro de negócio ->
+//                         -> cliente / fornecedor / representante (pessoa)
+
+//---------------------------------------------------------------------------------------
