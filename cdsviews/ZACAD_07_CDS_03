@@ -1,0 +1,43 @@
+@AbapCatalog.sqlViewName: 'ZACAD07CDS03'
+@AbapCatalog.compiler.compareFilter: true
+@AbapCatalog.preserveKey: true
+@AccessControl.authorizationCheck: #NOT_REQUIRED
+@EndUserText.label: 'CDS Views com associações'
+define view ZACAD_07_CDS_03 
+    as select from snwd_so as so  
+    
+    // NOTA: Toda associacao é um left outer join por padrao...
+    // NOTA: Toda $projection define a carga de uma associacao sob demanda, lazy...     
+    
+    // declara a associacao e a cardinalidade...      busca o campo da projecao (select list)...
+    association[0..1] to snwd_bpa as _bpa             on $projection.GUIDComprador = _bpa.node_key                           
+        
+{
+    key so.so_id as IdOrdem,            // EPM: Sales Order Number...
+    so.buyer_guid as GUIDComprador,     // EPM: Generic Node Key...
+    
+    _bpa                                // Target Source Cardinality, Target Cardinality Table  snwd_bpa  Undefined... 
+    
+//    _bpa.node_key as NodeKey,
+//    _bpa.bp_role as BpRole,
+//    _bpa.email_address as EmailAddress,
+//    _bpa.phone_number as PhoneNumber,
+//    _bpa.fax_number as FaxNumber,
+//    _bpa.web_address as WebAddress,
+//    _bpa.address_guid as AddressGuid,
+//    _bpa.bp_id as BpId,
+//    _bpa.company_name as CompanyName,
+//    _bpa.legal_form as LegalForm,
+//    _bpa.created_by as CreatedBy,
+//    _bpa.created_at as CreatedAt,
+//    _bpa.changed_by as ChangedBy,
+//    _bpa.changed_at as ChangedAt,
+//    _bpa.currency_code as CurrencyCode,
+//    _bpa.dummy_field_bpa as DummyFieldBpa,
+//    _bpa.approval_status as ApprovalStatus
+    
+}
+
+// snwd_so     ->  EPM: Sales Order Header Table...
+// snwd_bpa    ->  EPM: Business Partners...
+
