@@ -12,15 +12,27 @@ define view ZACAD_07_PARCEIROS
     as select from I_BusinessPartner as parceiro
     
     association[0..*] to I_BPContact as _contatos on $projection.Id = _contatos.BusinessPartnerCompany
+    association[0..1] to ZACAD_07_ENDERECOS as _enderecos on $projection.IdEndereco = _enderecos.AddressID
     
 {
-    parceiro.BusinessPartner as Id,
+    // Campos...
+    key parceiro.BusinessPartner as Id,        // 0001000049
+    parceiro.BusinessPartnerFullName as NomeCompleto,
+    parceiro.SearchTerm1 as TermoPesquisa1,
+    parceiro.SearchTerm1 as TermoPesquisa2,
+    parceiro._CurrentDefaultAddress.AddressID as IdEndereco,
     
-    _contatos
+    // Path Expression...
+    // Indústria ao qual o parceiro está relacionado...
+    parceiro._Industries._IndustryKeyText[1:Language = 'P'].IndustryName as DescricaoIndustriaPT,
+    parceiro._Industries._IndustryKeyText[1:Language = $session.system_language].IndustryName as DescricaoIndustria,
+    
+    // Associacoes...
+    _contatos,
+    _enderecos
 
     
 }
-
 
 // NOTA: bp  ->  Transacao para lidar com Paceiro de Negocio...
 // Parceiro Id:      1000049
