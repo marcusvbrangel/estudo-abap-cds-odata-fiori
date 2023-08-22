@@ -1,3 +1,8 @@
+
+//---------------------------------------------------------------------*
+// Data: 07/08/2023      Exec: 01
+//---------------------------------------------------------------------*
+
 // nome para visualizar no dicionario de dados -> se11...
 @AbapCatalog.sqlViewName: 'ZACAD07CDS01'     
 @AbapCatalog.compiler.compareFilter: true
