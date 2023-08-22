@@ -1,1 +1,92 @@
 
+//---------------------------------------------------------------------*
+// Data: 07/08/2023      Exec: 05
+//---------------------------------------------------------------------*
+
+@AbapCatalog.sqlViewName: 'ZACAD07E'
+@AbapCatalog.compiler.compareFilter: true
+@AbapCatalog.preserveKey: true
+@AccessControl.authorizationCheck: #NOT_REQUIRED
+@EndUserText.label: 'CDS view de Endereços de Parceiro'
+define view ZACAD_07_ENDERECOS 
+    as select from I_Address as endereco
+    
+{
+    key endereco.AddressID,
+    endereco.CareOfName,
+    endereco.AdditionalStreetSuffixName,
+    endereco.CorrespondenceLanguage,
+    endereco.PrfrdCommMediumType,
+    endereco.POBox,
+    endereco.POBoxIsWithoutNumber,
+    endereco.POBoxPostalCode,
+    endereco.POBoxLobbyName,
+    endereco.POBoxDeviatingCityName,
+    endereco.POBoxDeviatingRegion,
+    endereco.POBoxDeviatingCountry,
+    endereco.DeliveryServiceTypeCode,
+    endereco.DeliveryServiceNumber,
+    endereco.AddressTimeZone,
+    endereco.CityFileTestStatus,
+    endereco.AddressStreetUnusable,
+    endereco.AddressPostBoxUnusable,
+    endereco.FullName,
+    endereco.CityName,
+    endereco.District,
+    endereco.CityCode,
+    endereco.HomeCityName,
+    endereco.PostalCode,
+    endereco.CompanyPostalCode,
+    endereco.StreetName,
+    endereco.StreetPrefixName,
+    endereco.AdditionalStreetPrefixName,
+    endereco.StreetSuffixName,
+    endereco.HouseNumber,
+    endereco.HouseNumberSupplementText,
+    endereco.Building,
+    endereco.Floor,
+    endereco.RoomNumber,
+    endereco.Country,
+    endereco.Region,
+    endereco.County,
+    endereco.CountyCode,
+    endereco.TownshipCode,
+    endereco.TownshipName,
+    endereco.FormOfAddress,
+    endereco.BusinessPartnerName1,
+    endereco.BusinessPartnerName2,
+    endereco.Nation,
+    endereco.PhoneNumber,
+    endereco.FaxNumber,
+    endereco.SearchTerm1,
+    endereco.SearchTerm2,
+    endereco.StreetSearch,
+    endereco.CitySearch,
+    endereco.BusinessPartnerName3,
+    endereco.BusinessPartnerName4,
+    endereco.TaxJurisdiction,
+    endereco.TransportZone,
+    endereco.AddressCityPostBoxCode,
+    endereco.Person,
+    endereco._CityCode,
+    endereco._Country,
+    endereco._CountyCode,
+    endereco._DefaultCorpEmailAddress,
+    endereco._DefaultCorpFaxNumber,
+    endereco._DefaultCorpMobilePhoneNumber,
+    endereco._DefaultCorporatePhoneNumber,
+    endereco._DefaultCorpURLAddress,
+    endereco._DefaultEmailAddress,
+    endereco._DefaultFaxNumber,
+    endereco._DefaultMobilePhoneNumber,
+    endereco._DefaultPhoneNumber,
+    endereco._DefaultPrivateFaxNumber,
+    endereco._DefaultPrivatePhoneNumber,
+    endereco._DefaultPvtEmailAddress,
+    endereco._DefaultPvtMobilePhoneNumber,
+    endereco._DefaultPvtURLAddress,
+    endereco._DefaultURLAddress,
+    endereco._FormOfAddress,
+    endereco._Region
+}
+
