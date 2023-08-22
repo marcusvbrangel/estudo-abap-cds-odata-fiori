@@ -1,0 +1,49 @@
+
+*---------------------------------------------------------------------*
+* Data: 07/08/2023      Exec: 06
+*---------------------------------------------------------------------*
+
+**********************************************************************
+*  AMDP
+*
+*  NOTA: Dá muita performance;
+*        Más também muita complexidade
+*
+**********************************************************************
+
+* NOTA: A classe é abap...
+CLASS zacad_07_amdp_01 DEFINITION
+
+  PUBLIC
+  FINAL
+  CREATE PUBLIC .
+
+  PUBLIC SECTION.
+
+    TYPES: BEGIN OF ty_classif,
+             bp_id    TYPE snwd_bpa-bp_id,
+             category TYPE i,
+             text     TYPE string,
+           END OF ty_classif,
+           tt_classif TYPE TABLE OF ty_classif WITH EMPTY KEY.
+
+    INTERFACES:
+      if_amdp_marker_hdb. " indica que será executado dentro do hana... code-push-down...
+
+    " NOTA: O método é amdp...
+    METHODS classificar_bp_padrao IMPORTING VALUE(clnt)           TYPE sy-mandt
+                                  EXPORTING VALUE(classificacoes) TYPE tt_classif.
+
+  PROTECTED SECTION.
+  PRIVATE SECTION.
+ENDCLASS.
+
+
+CLASS zacad_07_amdp_01 IMPLEMENTATION.    " NOTA: Método amdp usa sqlscript...
+
+  METHOD classificar_bp_padrao BY DATABASE PROCEDURE FOR HDB LANGUAGE SQLSCRIPT OPTIONS READ-ONLY
+                               USING snwd_bpa.
+
+  ENDMETHOD.
+
+ENDCLASS.
