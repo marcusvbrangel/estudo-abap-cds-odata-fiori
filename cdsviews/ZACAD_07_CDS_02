@@ -1,3 +1,8 @@
+
+//---------------------------------------------------------------------*
+// Data: 07/08/2023      Exec: 02
+//---------------------------------------------------------------------*
+
 @AbapCatalog.sqlViewName: 'ZACAD07CDS02'
 @AbapCatalog.compiler.compareFilter: true
 @AbapCatalog.preserveKey: true
