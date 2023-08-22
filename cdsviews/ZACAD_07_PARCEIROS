@@ -1,0 +1,33 @@
+
+//---------------------------------------------------------------------*
+// Data: 07/08/2023      Exec: 04
+//---------------------------------------------------------------------*
+
+@AbapCatalog.sqlViewName: 'ZACAD07P'
+@AbapCatalog.compiler.compareFilter: true
+@AbapCatalog.preserveKey: true
+@AccessControl.authorizationCheck: #NOT_REQUIRED
+@EndUserText.label: 'CDS view de Parceiros'
+define view ZACAD_07_PARCEIROS 
+    as select from I_BusinessPartner as parceiro
+    
+    association[0..*] to I_BPContact as _contatos on $projection.Id = _contatos.BusinessPartnerCompany
+    
+{
+    parceiro.BusinessPartner as Id,
+    
+    _contatos
+
+    
+}
+
+
+// NOTA: bp  ->  Transacao para lidar com Paceiro de Negocio...
+// Parceiro Id:      1000049
+// Parceiro Nome:    MDG Bupa
+
+// NOTA: I_BusinessPartner  ->  cds view mãe da tabela  ->  BUT000
+// NOTA: I_BPContact        ->  cds view da tabela      ->  BUT050
+
+// NOTA: Dicionario de dados  ->  se11
+
