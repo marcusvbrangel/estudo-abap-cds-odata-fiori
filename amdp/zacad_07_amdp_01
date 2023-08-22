@@ -4,7 +4,7 @@
 *---------------------------------------------------------------------*
 
 **********************************************************************
-*  AMDP
+*  AMDP  ->  É basicamente uma Stored Procedure, rodada diretamente no HANA
 *
 *  NOTA: Dá muita performance;
 *        Más também muita complexidade
@@ -21,10 +21,12 @@ CLASS zacad_07_amdp_01 DEFINITION
   PUBLIC SECTION.
 
     TYPES: BEGIN OF ty_classif,
-             bp_id    TYPE snwd_bpa-bp_id,
-             category TYPE i,
-             text     TYPE string,
+             bp_id          TYPE snwd_bpa-bp_id,
+             company_name   type snwd_bpa-company_name,
+             category       TYPE i,
+             text           TYPE string,
            END OF ty_classif,
+
            tt_classif TYPE TABLE OF ty_classif WITH EMPTY KEY.
 
     INTERFACES:
@@ -36,6 +38,7 @@ CLASS zacad_07_amdp_01 DEFINITION
 
   PROTECTED SECTION.
   PRIVATE SECTION.
+
 ENDCLASS.
 
 
@@ -43,6 +46,17 @@ CLASS zacad_07_amdp_01 IMPLEMENTATION.    " NOTA: Método amdp usa sqlscript...
 
   METHOD classificar_bp_padrao BY DATABASE PROCEDURE FOR HDB LANGUAGE SQLSCRIPT OPTIONS READ-ONLY
                                USING snwd_bpa.
+
+    classificacoes =
+
+        select bp_id,
+               company_name,
+               '3' as category,
+               'Padrao' as text
+
+        from snwd_bpa
+        where client = :clnt
+        order by bp_id, company_name;
 
   ENDMETHOD.
 
