@@ -9,10 +9,13 @@ TRANSAÇÃO       DESCRIÇÃO
 
 ---
 
-/$sync          Limpar/Reinicializar o buffer
-ABAPDOCU        Documentação ABAP e exemplos
-BAPI            BAPI Explorer
-BD64            Atualização modelo de distribuição
+* /$sync          Limpar/Reinicializar o buffer
+
+* ABAPDOCU        Documentação ABAP e exemplos
+
+* BAPI            BAPI Explorer
+
+* BD64            Atualização modelo de distribuição
 BD87            Monitor de status para mensagens ALE
 CG3Y            Efetuar download file
 CG3Z            Efetuar upload file
