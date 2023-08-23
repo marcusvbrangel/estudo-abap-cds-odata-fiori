@@ -1,1 +1,49 @@
+*---------------------------------------------------------------------*
+* Data: 08/08/2023      Exec: 07
+*---------------------------------------------------------------------*
+REPORT zacad_07_amdp_01.
+
+PARAMETERS: p_min TYPE i,
+            p_max TYPE i.
+
+* create object forma antiga para criar um objeto...
+* declaracao inline para criar a instancia...
+DATA(amdp_1) = NEW zacad_07_amdp_01(  ).
+
+
+* SHIFT + ENTER, para completar o preenchimento da chamada...
+*amdp_1->classificar_bp_padrao(
+*    EXPORTING
+*        clnt   = sy-mandt
+*    IMPORTING
+*        classificacoes = DATA(classificacoes)
+*).
+
+
+* NOTA: depois de colocar a set "->", clicar SHIFT + ENTER, para preencher  os parametros da chamada...
+amdp_1->classificar_bp_invoices(
+
+    EXPORTING
+        iv_min = p_min
+        iv_max = p_max
+
+    IMPORTING
+        classificacoes = DATA(classificacoes)
+
+).
+
+* testes: min: 200, max: 400
+
+
+cl_salv_table=>factory(
+
+    IMPORTING
+        r_salv_table = DATA(alv)
+
+    CHANGING
+        t_table      = classificacoes
+
+).
+
+alv->display(  ).
 
