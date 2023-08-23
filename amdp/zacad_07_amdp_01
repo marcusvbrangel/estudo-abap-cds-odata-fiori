@@ -21,10 +21,10 @@ CLASS zacad_07_amdp_01 DEFINITION
   PUBLIC SECTION.
 
     TYPES: BEGIN OF ty_classif,
-             bp_id          TYPE snwd_bpa-bp_id,
-             company_name   type snwd_bpa-company_name,
-             category       TYPE i,
-             text           TYPE string,
+             bp_id        TYPE snwd_bpa-bp_id,
+             company_name TYPE snwd_bpa-company_name,
+             category     TYPE i,
+             text         TYPE string,
            END OF ty_classif,
 
            tt_classif TYPE TABLE OF ty_classif WITH EMPTY KEY.
@@ -35,6 +35,10 @@ CLASS zacad_07_amdp_01 DEFINITION
     " NOTA: O método é amdp...
     METHODS classificar_bp_padrao IMPORTING VALUE(clnt)           TYPE sy-mandt
                                   EXPORTING VALUE(classificacoes) TYPE tt_classif.
+
+    METHODS classificar_bp_invoices IMPORTING VALUE(iv_min)           TYPE i
+                                              VALUE(iv_max)           TYPE i
+                                    EXPORTING VALUE(classificacoes) TYPE tt_classif.
 
   PROTECTED SECTION.
   PRIVATE SECTION.
@@ -60,4 +64,45 @@ CLASS zacad_07_amdp_01 IMPLEMENTATION.    " NOTA: Método amdp usa sqlscript...
 
   ENDMETHOD.
 
+  METHOD classificar_bp_invoices BY DATABASE PROCEDURE FOR HDB LANGUAGE SQLSCRIPT OPTIONS READ-ONLY
+                                 USING snwd_bpa snwd_so_inv_head.
+
+
+* tabela intermediaria com a contagem de ordens...
+    parceiros_invoices =
+
+        select bp_id,
+               company_name,
+               COUNT( cabecalho.so_guid ) as qtde_invoices
+        from snwd_bpa
+            INNER JOIN snwd_so_inv_head as cabecalho
+                on cabecalho.buyer_guid = snwd_bpa.node_key
+        GROUP BY snwd_bpa.bp_id,
+                 snwd_bpa.company_name
+        ORDER BY snwd_bpa.bp_id, snwd_bpa.company_name;
+
+* calcula o resultado final e popula a tabela de classificacoes...
+    classificacoes =
+
+        select bp_id,
+               company_name,
+
+               case
+                when qtde_invoices < :iv_min then '1'      -- pouca receita...
+                when qtde_invoices > :iv_max then '2'      -- muita receita, premium...
+                else '3'                                   -- padrao...
+               end as category,
+
+               case
+                when qtde_invoices < :iv_min then 'Pequeno'      -- pouca receita...
+                when qtde_invoices > :iv_max then 'Premium'      -- muita receita, premium...
+                else 'Padrao'                                    -- padrao...
+               end as text
+
+       from :parceiros_invoices
+       order BY bp_id, company_name;
+
+  ENDMETHOD.
+
 ENDCLASS.
+
