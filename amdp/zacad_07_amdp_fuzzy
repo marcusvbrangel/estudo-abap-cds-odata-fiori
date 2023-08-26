@@ -1,1 +1,57 @@
+CLASS zacad_07_amdp_fuzzy DEFINITION
+
+  PUBLIC
+
+  FINAL
+
+  CREATE PUBLIC .
+
+  PUBLIC SECTION.
+
+    TYPES: BEGIN OF ty_parceiro,
+             company_name type snwd_company_name,
+             precisao type maxbt,       " tipo decimal -> indica o quanto de precisao foi atingido na busca...
+           END OF ty_parceiro,
+
+    tt_parceiros TYPE TABLE OF ty_parceiro WITH KEY company_name.
+
+
+    INTERFACES:
+      if_amdp_marker_hdb. " indica que será executado dentro do hana... code-push-down...
+
+    CLASS-METHODS busca_fuzzy IMPORTING VALUE(iv_palavra_busca) type snwd_company_name   " entrada....
+                              EXPORTING VALUE(parceiros) type tt_parceiros.              " retorno...
+
+  PROTECTED SECTION.
+
+  PRIVATE SECTION.
+
+
+* fator fuzzy -> quanto mais proximo de zero, mais aberto...
+*             -> quanto mais proximo de um, mais restrito...
+*             -> so da para fazer em sql script...
+
+ENDCLASS.
+
+
+
+CLASS zacad_07_amdp_fuzzy IMPLEMENTATION.
+
+
+  METHOD busca_fuzzy BY DATABASE PROCEDURE FOR HDB LANGUAGE SQLSCRIPT OPTIONS READ-ONLY
+                     USING snwd_bpa.
+
+    parceiros =
+        select
+            company_name,
+            score(  ) as precisao
+        from snwd_bpa
+        where
+            CONTAINS( company_name, :iv_palavra_busca, FUZZY(0.8) );
+
+
+  ENDMETHOD.
+
+ENDCLASS.
+
 
