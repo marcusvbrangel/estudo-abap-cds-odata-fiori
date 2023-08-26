@@ -35,6 +35,7 @@ ENDCLASS.
 
 
 
+
 CLASS zacad_07_amdp_fuzzy IMPLEMENTATION.
 
 
@@ -47,11 +48,8 @@ CLASS zacad_07_amdp_fuzzy IMPLEMENTATION.
             score(  ) as precisao
         from snwd_bpa
         where
-            CONTAINS( company_name, :iv_palavra_busca, FUZZY(0.8) );
-
+            CONTAINS( company_name, :iv_palavra_busca, FUZZY(0.5) );
 
   ENDMETHOD.
 
 ENDCLASS.
-
-
