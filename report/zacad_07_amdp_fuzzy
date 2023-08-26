@@ -28,4 +28,3 @@ DATA(functions) = alv->get_functions(  ).
 functions->set_all(  ).
 
 alv->display(  ).
-
