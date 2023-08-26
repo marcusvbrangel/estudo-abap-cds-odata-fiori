@@ -1,1 +1,31 @@
 
+*---------------------------------------------------------------------*
+* Data: 08/08/2023      Exec: 09
+*---------------------------------------------------------------------*
+
+REPORT zacad_07_amdp_fuzzy.
+
+PARAMETERS p_parc type snwd_company_name.
+
+zacad_07_amdp_fuzzy=>busca_fuzzy(
+  EXPORTING
+    iv_palavra_busca = p_parc          " vai passar o filtro de busca...
+  IMPORTING
+    parceiros        = DATA(parceiros) " vai ser retornado uma tabela de parceiros...
+).
+
+* exibicao...
+cl_salv_table=>factory(
+  IMPORTING
+    r_salv_table   = DATA(alv)
+  CHANGING
+    t_table        = parceiros
+).
+*CATCH cx_salv_msg.
+
+DATA(functions) = alv->get_functions(  ).
+
+functions->set_all(  ).
+
+alv->display(  ).
+
