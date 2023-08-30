@@ -1,0 +1,18 @@
+
+//---------------------------------------------------------------------*
+// Data: 08/08/2023      Exec: 10
+//---------------------------------------------------------------------*
+
+@AbapCatalog.sqlViewName: 'ZACAD07OP'
+@AbapCatalog.compiler.compareFilter: true
+@AbapCatalog.preserveKey: true
+@AccessControl.authorizationCheck: #NOT_REQUIRED
+@EndUserText.label: 'Ordens processadas - cds view'
+define view ZACAD_07_ordens_processadas 
+    as select from /scmtms/d_tordrf as ordens
+    
+{
+    right(ordens.btd_id, 10) as ordemVenda    
+}
+
+where btd_tco = '114'
