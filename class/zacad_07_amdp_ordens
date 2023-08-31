@@ -1,1 +1,42 @@
 
+*---------------------------------------------------------------------*
+* Data: 08/08/2023      Exec: 12
+*---------------------------------------------------------------------*
+
+CLASS zacad_07_amdp_ordens DEFINITION
+  PUBLIC
+  FINAL
+  CREATE PUBLIC .
+
+  PUBLIC SECTION.
+
+    INTERFACES:
+        if_amdp_marker_hdb.
+
+        class-METHODS: buscar_orderns FOR TABLE FUNCTION ZACAD_07_ordens_processadas_tf.
+
+  PROTECTED SECTION.
+  PRIVATE SECTION.
+ENDCLASS.
+
+
+
+CLASS zacad_07_amdp_ordens IMPLEMENTATION.
+
+  METHOD buscar_orderns BY DATABASE FUNCTION FOR HDB LANGUAGE SQLSCRIPT OPTIONS READ-ONLY
+                        USING vbap /SCMTMS/D_TORDRF.
+
+    RETURN
+
+            SELECT
+                vbeln as valorOrdemConvertido,
+                btd_id as valorOrdemOriginal
+
+            FROM vbap
+            INNER JOIN "/SCMTMS/D_TORDRF" as ref on vbap.vbeln = RIGHT(ref.btd_id, 10)
+            WHERE btd_tco = '114';
+
+
+  ENDMETHOD.
+
+ENDCLASS.
