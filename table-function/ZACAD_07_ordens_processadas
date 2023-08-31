@@ -1,0 +1,21 @@
+
+//---------------------------------------------------------------------*
+// Data: 08/08/2023      Exec: 10    ????
+//---------------------------------------------------------------------*
+
+//@AbapCatalog.sqlViewName: 'ZACAD07OP'
+//@AbapCatalog.compiler.compareFilter: true
+//@AbapCatalog.preserveKey: true
+@AccessControl.authorizationCheck: #NOT_REQUIRED
+@EndUserText.label: 'Ordens'
+define table function ZACAD_07_ordens_processadas 
+  returns 
+  
+  {
+    // layout com os campos e tipos...
+    valorOrdemConvertido: vbeln;
+    valorOrdemOriginal: /scmtms/btd_id;  
+  }
+  
+  //implemented by method zacad_07_amdp_ordens=>buscar_orderns.
+  
