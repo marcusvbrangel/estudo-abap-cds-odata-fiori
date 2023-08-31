@@ -1,0 +1,17 @@
+
+//---------------------------------------------------------------------*
+// Data: 08/08/2023      Exec: 11
+//---------------------------------------------------------------------*
+
+@ClientHandling.type: #CLIENT_INDEPENDENT
+@EndUserText.label: 'Table function'
+define table function ZACAD_07_ordens_processadas_tf 
+    returns     
+    
+{
+    // layout com os campos e tipos...
+    valorOrdemConvertido: vbeln;
+    valorOrdemOriginal: /scmtms/btd_id;  
+}
+
+implemented by method zacad_07_amdp_ordens=>buscar_orderns
